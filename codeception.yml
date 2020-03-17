@@ -1,0 +1,21 @@
+namespace: FondOf
+suites:
+    unit:
+        path: .
+
+bootstrap: _bootstrap.php
+
+settings:
+    shuffle: true
+    lint: true
+
+paths:
+    tests: tests
+    output: tests/_output
+    support: tests/_support
+    data: tests/_data
+
+coverage:
+    enabled: true
+    include:
+        - src/*.php

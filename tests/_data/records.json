@@ -1,0 +1,40 @@
+{
+  "records": [
+    {
+      "id": "1",
+      "fields": {
+        "foo": "bar"
+      },
+      "createdTime": ""
+    },
+    {
+      "id": "2",
+      "fields": {
+        "foo": "bar"
+      },
+      "createdTime": ""
+    },
+    {
+      "id": "3",
+      "fields": {
+        "foo": "bar"
+      },
+      "createdTime": ""
+    },
+    {
+      "id": "4",
+      "fields": {
+        "foo": "bar"
+      },
+      "createdTime": ""
+    },
+    {
+      "id": "5",
+      "fields": {
+        "foo": "bar"
+      },
+      "createdTime": ""
+    }
+  ],
+  "offset": "abc123"
+}
