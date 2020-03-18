@@ -2,6 +2,7 @@
 
 namespace FondOf\Airtable;
 
+use FondOf\Airtable\Exception\InvalidPostBody;
 use FondOf\Airtable\Exception\MissingConfigException;
 use FondOf\Airtable\Service\HttpInterface;
 
@@ -72,9 +73,9 @@ class ApiClient implements ApiClientInterface
     /**
      * @param string $base
      * @param string $table
-     * @return bool|string
+     * @return string
      */
-    public function getRecords(string $base, string $table)
+    public function listRecords(string $base, string $table): string
     {
         $params = '?maxRecords=' . $this->limit;
         return $this->service->get(sprintf('%s/%s/%s%s', $this->apiUrl(), $base, $table, $params));
@@ -84,9 +85,9 @@ class ApiClient implements ApiClientInterface
      * @param string $base      Airtable base id
      * @param string $table     Airtable table id
      * @param string $id        Table record id
-     * @return bool|string
+     * @return string
      */
-    public function getRecord(string $base, string $table, string $id)
+    public function listRecord(string $base, string $table, string $id): string
     {
         return $this->service->get(sprintf('%s/%s/%s/%s', $this->apiUrl(), $base, $table, $id));
     }
@@ -95,14 +96,22 @@ class ApiClient implements ApiClientInterface
      * @param string        $base       Airtable base id
      * @param string        $table      Airtable table id
      * @param array<string> $fields     Array containing data for the new record
-     * @return bool|string
+     * @return string
+     * @throws \FondOf\Airtable\Exception\InvalidPostBody
      */
-    public function postRecord(string $base, string $table, array $fields)
+    public function createRecord(string $base, string $table, array $fields): string
     {
-        $body = [
+        $data = [
             'fields' => $fields
         ];
-        return $this->service->post(sprintf('%s/%s/%s', $this->apiUrl(), $base, $table), json_encode($body));
+
+        $body = json_encode($data);
+
+        if (!$body) {
+            throw new InvalidPostBody('Your data fields coudn\'t be encoded correctly.');
+        }
+
+        return $this->service->post(sprintf('%s/%s/%s', $this->apiUrl(), $base, $table), $body);
     }
 
     /**

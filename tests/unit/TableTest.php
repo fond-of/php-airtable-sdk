@@ -13,7 +13,7 @@ class TableTest extends Unit
     function test_get_records()
     {
         $client = $this->make(ApiClient::class, [
-            'getRecords' => Expected::once('foo')
+            'listRecords' => Expected::once('foo')
         ]);
         $table = new Table($client);
 
@@ -25,7 +25,7 @@ class TableTest extends Unit
     function test_get_record()
     {
         $client = $this->make(ApiClient::class, [
-            'getRecord' => Expected::once('bar')
+            'listRecord' => Expected::once('bar')
         ]);
         $table = new Table($client);
 
@@ -37,7 +37,7 @@ class TableTest extends Unit
     function test_write_record()
     {
         $client = $this->make(ApiClient::class, [
-            'postRecord' => Expected::once('bar')
+            'createRecord' => Expected::once('bar')
         ]);
         $table = new Table($client);
 
@@ -56,6 +56,29 @@ class TableTest extends Unit
         $response = $table->writeRecord($fields);
 
         $this->assertEquals('bar', $response);
+    }
+
+    function test_set_limit()
+    {
+        $client = $this->make(ApiClient::class, [
+            'setLimit' => Expected::once('bar')
+        ]);
+        $table = new Table($client);
+
+        $table->limit(100);
+    }
+
+    function test_set_exceed_limit()
+    {
+        $client = $this->make(ApiClient::class);
+        $table = new Table($client);
+
+        try {
+            $table->limit(101);
+        } catch (\Exception $exception) {
+            $this->assertInstanceOf(\InvalidArgumentException::class, $exception);
+        }
+
     }
 
 }

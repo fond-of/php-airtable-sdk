@@ -2,6 +2,7 @@
 
 namespace FondOf\Airtable\Service;
 
+use FondOf\Airtable\Exception\HttpRequestError;
 use GuzzleHttp\Client;
 
 class HttpGuzzle implements HttpInterface
@@ -29,16 +30,17 @@ class HttpGuzzle implements HttpInterface
 
     /**
      * @param string $url
-     * @return bool|string
+     * @return string
+     * @throws \FondOf\Airtable\Exception\HttpRequestError
      */
-    public function get(string $url)
+    public function get(string $url): string
     {
         $response = $this->client->get($url, [
             'headers' => $this->headers
         ]);
 
         if ($response->getStatusCode() !== 200) {
-            return false;
+            throw new HttpRequestError($response->getReasonPhrase(), $response->getStatusCode());
         }
 
         return $response->getBody()->getContents();
@@ -46,10 +48,11 @@ class HttpGuzzle implements HttpInterface
 
     /**
      * @param string $url
-     * @param string|bool $body
-     * @return bool|string
+     * @param string $body
+     * @return string
+     * @throws \FondOf\Airtable\Exception\HttpRequestError
      */
-    public function post(string $url, $body)
+    public function post(string $url, string $body): string
     {
         $response = $this->client->request('POST', $url, [
             'headers' => $this->headers,
@@ -57,7 +60,7 @@ class HttpGuzzle implements HttpInterface
         ]);
 
         if ($response->getStatusCode() !== 200) {
-            return false;
+            throw new HttpRequestError($response->getReasonPhrase(), $response->getStatusCode());
         }
 
         return $response->getBody()->getContents();

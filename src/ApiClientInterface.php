@@ -8,27 +8,27 @@ interface ApiClientInterface
      * Return all records for a table in the specified base
      * @param string $base
      * @param string $table
-     * @return bool|string
+     * @return string
      */
-    public function getRecords(string $base, string $table);
+    public function listRecords(string $base, string $table): string;
 
     /**
      * Return a specific record by id from the table
      * @param string $base
      * @param string $table
      * @param string $id
-     * @return mixed
+     * @return string
      */
-    public function getRecord(string $base, string $table, string $id);
+    public function listRecord(string $base, string $table, string $id): string;
 
     /**
      * Create a new record in the given table
      * @param string        $base
      * @param string        $table
      * @param array<string> $fields
-     * @return mixed
+     * @return string
      */
-    public function postRecord(string $base, string $table, array $fields);
+    public function createRecord(string $base, string $table, array $fields): string;
 
     /**
      * Set max number of records to return

@@ -29,23 +29,23 @@ class ApiClientTest extends Unit
         parent::_before();
     }
 
-    function test_get_records()
+    function test_list_records()
     {
-        $response = $this->client->getRecords('foo', 'bar');
+        $response = $this->client->listRecords('foo', 'bar');
 
         $this->assertEquals('bar', $response);
     }
 
-    function test_get_record()
+    function test_list_record()
     {
-        $response = $this->client->getRecord('foo', 'bar', '1');
+        $response = $this->client->listRecord('foo', 'bar', '1');
 
         $this->assertEquals('bar', $response);
     }
 
-    function test_post_record()
+    function test_create_record()
     {
-        $response = $this->client->postRecord('foo', 'bar', ['foo' => 'bar']);
+        $response = $this->client->createRecord('foo', 'bar', ['foo' => 'bar']);
 
         $this->assertEquals('foo', $response);
     }

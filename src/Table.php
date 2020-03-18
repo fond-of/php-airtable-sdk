@@ -2,10 +2,12 @@
 
 namespace FondOf\Airtable;
 
+use InvalidArgumentException;
+
 class Table
 {
     /**
-     * @var ApiClientInterface
+     * @var \FondOf\Airtable\ApiClientInterface
      */
     private $client;
 
@@ -20,10 +22,15 @@ class Table
     protected $table;
 
     /**
-     * @var mixed       Table records
+     * @var string      Table records
      */
     protected $records;
 
+    /**
+     * @param \FondOf\Airtable\ApiClientInterface $client
+     * @param string $base
+     * @param string $table
+     */
     public function __construct(ApiClientInterface $client, string $base = '', string $table = '')
     {
         $this->client = $client;
@@ -32,23 +39,22 @@ class Table
     }
 
     /**
-     * Get all records for a table
-     * @return bool|string
+     * @return string
      */
-    public function getRecords()
+    public function getRecords(): string
     {
-        $this->records = $this->client->getRecords($this->base, $this->table);
+        $this->records = $this->client->listRecords($this->base, $this->table);
         return $this->records;
     }
 
     /**
      * Get a single record by id from a table
      * @param string $id    Record id
-     * @return mixed
+     * @return string
      */
-    public function getRecord(string $id)
+    public function getRecord(string $id): string
     {
-        return $this->client->getRecord($this->base, $this->table, $id);
+        return $this->client->listRecord($this->base, $this->table, $id);
     }
 
     /**
@@ -58,7 +64,7 @@ class Table
      */
     public function writeRecord(array $fields)
     {
-        return $this->client->postRecord($this->base, $this->table, $fields);
+        return $this->client->createRecord($this->base, $this->table, $fields);
     }
 
     public function setTable(string $table): void
@@ -110,6 +116,11 @@ class Table
      */
     public function limit(int $limit): Table
     {
+        if ($limit > 100) {
+            throw new InvalidArgumentException(
+                sprintf('Record limit can\'t must be between 1 and 100. %s given.', $limit)
+            );
+        }
         $this->client->setLimit($limit);
         return $this;
     }
