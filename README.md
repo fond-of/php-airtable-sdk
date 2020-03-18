@@ -1,5 +1,7 @@
 # Airtable SDK for PHP (beta)
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fond-of/php-airtable-sdk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fond-of/php-airtable-sdk/?branch=master)
+
 The Airtable SDK for PHP allows you to read and write data to Airtable via API. 
 The library comes with a single dependency which is Guzzle 6.x.
 
