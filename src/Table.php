@@ -4,7 +4,7 @@ namespace FondOf\Airtable;
 
 use InvalidArgumentException;
 
-class Table
+class Table implements TableInterface
 {
     /**
      * @var \FondOf\Airtable\ApiClientInterface
@@ -60,9 +60,9 @@ class Table
     /**
      * Create a new record in a table
      * @param array<string> $fields Array containing data for the new record
-     * @return mixed
+     * @return string
      */
-    public function writeRecord(array $fields)
+    public function writeRecord(array $fields): string
     {
         return $this->client->createRecord($this->base, $this->table, $fields);
     }
@@ -92,7 +92,7 @@ class Table
      * @param string $base     Airtable base id
      * @return $this
      */
-    public function base(string $base): Table
+    public function base(string $base): TableInterface
     {
         $this->setBase($base);
         return $this;
@@ -103,7 +103,7 @@ class Table
      * @param string $table    Airtable table id
      * @return $this
      */
-    public function table(string $table): Table
+    public function table(string $table): TableInterface
     {
         $this->setTable($table);
         return $this;
@@ -114,7 +114,7 @@ class Table
      * @param int $limit
      * @return $this
      */
-    public function limit(int $limit): Table
+    public function limit(int $limit): TableInterface
     {
         if ($limit > 100) {
             throw new InvalidArgumentException(
