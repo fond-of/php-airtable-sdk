@@ -1,13 +1,12 @@
 <?php
 
 
-namespace FondOf\Airtable\unit;
+namespace FondOf\Airtable;
 
-use Codeception\Stub\Expected;
 use Codeception\Test\Unit;
-use FondOf\Airtable\ApiClient;
+use Exception;
 use FondOf\Airtable\Service\HttpGuzzle;
-use FondOf\Airtable\Table;
+use FondOf\Airtable\Exception\NoWriteDataException;
 
 class ApiClientTest extends Unit
 {
@@ -48,6 +47,15 @@ class ApiClientTest extends Unit
         $response = $this->client->createRecord('foo', 'bar', ['foo' => 'bar']);
 
         $this->assertEquals('foo', $response);
+    }
+
+    function test_create_record_empty_fields()
+    {
+        try {
+            $this->client->createRecord('foo', 'bar', []);
+        } catch (Exception $exception) {
+            $this->assertInstanceOf(NoWriteDataException::class, $exception);
+        }
     }
 
 }

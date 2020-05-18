@@ -1,12 +1,11 @@
 <?php
 
 
-namespace FondOf\Airtable\unit;
+namespace FondOf\Airtable;
 
 use Codeception\Test\Unit;
-use FondOf\Airtable\Airtable;
-use FondOf\Airtable\ApiClient;
 use FondOf\Airtable\Exception\MissingConfigException;
+use Exception;
 
 class AirtableTest extends Unit
 {
@@ -27,7 +26,7 @@ class AirtableTest extends Unit
         $airtable = new Airtable();
         try {
             $airtable->createApiClient();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->assertInstanceOf(MissingConfigException::class, $exception);
         }
 

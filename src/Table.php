@@ -118,7 +118,7 @@ class Table implements TableInterface
     {
         if ($limit > 100) {
             throw new InvalidArgumentException(
-                sprintf('Record limit can\'t must be between 1 and 100. %s given.', $limit)
+                sprintf('Record limit must be between 1 and 100. %s given.', $limit)
             );
         }
         $this->client->setLimit($limit);

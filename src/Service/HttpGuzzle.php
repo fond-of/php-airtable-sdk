@@ -2,7 +2,7 @@
 
 namespace FondOf\Airtable\Service;
 
-use FondOf\Airtable\Exception\HttpRequestError;
+use FondOf\Airtable\Exception\ApiRequestException;
 use GuzzleHttp\Client;
 
 class HttpGuzzle implements HttpInterface
@@ -31,7 +31,7 @@ class HttpGuzzle implements HttpInterface
     /**
      * @param string $url
      * @return string
-     * @throws \FondOf\Airtable\Exception\HttpRequestError
+     * @throws \FondOf\Airtable\Exception\ApiRequestException
      */
     public function get(string $url): string
     {
@@ -40,7 +40,7 @@ class HttpGuzzle implements HttpInterface
         ]);
 
         if ($response->getStatusCode() !== 200) {
-            throw new HttpRequestError($response->getReasonPhrase(), $response->getStatusCode());
+            throw new ApiRequestException($response->getReasonPhrase(), $response->getStatusCode());
         }
 
         return $response->getBody()->getContents();
@@ -50,7 +50,7 @@ class HttpGuzzle implements HttpInterface
      * @param string $url
      * @param string $body
      * @return string
-     * @throws \FondOf\Airtable\Exception\HttpRequestError
+     * @throws \FondOf\Airtable\Exception\ApiRequestException
      */
     public function post(string $url, string $body): string
     {
@@ -60,7 +60,7 @@ class HttpGuzzle implements HttpInterface
         ]);
 
         if ($response->getStatusCode() !== 200) {
-            throw new HttpRequestError($response->getReasonPhrase(), $response->getStatusCode());
+            throw new ApiRequestException($response->getReasonPhrase(), $response->getStatusCode());
         }
 
         return $response->getBody()->getContents();

@@ -2,7 +2,8 @@
 
 namespace FondOf\Airtable;
 
-use FondOf\Airtable\Exception\InvalidPostBody;
+use FondOf\Airtable\Exception\MarshalFieldsException;
+use FondOf\Airtable\Exception\NoWriteDataException;
 use FondOf\Airtable\Exception\MissingConfigException;
 use FondOf\Airtable\Service\HttpInterface;
 
@@ -52,6 +53,7 @@ class ApiClient implements ApiClientInterface
     /**
      * @param HttpInterface $service
      * @param array<mixed> $config
+     *
      * @throws MissingConfigException
      */
     public function __construct(HttpInterface $service, array $config)
@@ -73,6 +75,7 @@ class ApiClient implements ApiClientInterface
     /**
      * @param string $base
      * @param string $table
+     *
      * @return string
      */
     public function listRecords(string $base, string $table): string
@@ -85,6 +88,7 @@ class ApiClient implements ApiClientInterface
      * @param string $base      Airtable base id
      * @param string $table     Airtable table id
      * @param string $id        Table record id
+     *
      * @return string
      */
     public function listRecord(string $base, string $table, string $id): string
@@ -93,22 +97,29 @@ class ApiClient implements ApiClientInterface
     }
 
     /**
-     * @param string        $base       Airtable base id
-     * @param string        $table      Airtable table id
-     * @param array<string> $fields     Array containing data for the new record
+     * @param string $base Airtable base id
+     * @param string $table Airtable table id
+     *
+     * @param array<string> $fields Array containing data for the new record
      * @return string
-     * @throws \FondOf\Airtable\Exception\InvalidPostBody
+     *
+     * @throws \FondOf\Airtable\Exception\NoWriteDataException
+     * @throws \FondOf\Airtable\Exception\MarshalFieldsException
      */
     public function createRecord(string $base, string $table, array $fields): string
     {
+        if (empty($fields)) {
+            throw new NoWriteDataException('Didn\'t receive data for write.');
+        }
+
         $data = [
             'fields' => $fields
         ];
 
         $body = json_encode($data);
 
-        if (!$body) {
-            throw new InvalidPostBody('Your data fields coudn\'t be encoded correctly.');
+        if ($body === false) {
+            throw new MarshalFieldsException('Couldn\'t encode fields.');
         }
 
         return $this->service->post(sprintf('%s/%s/%s', $this->apiUrl(), $base, $table), $body);

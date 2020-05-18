@@ -5,8 +5,8 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Chris Egger",
-      "email": "christopher.egger@fondof.de"
+      "name": "FOND OF",
+      "email": "spryker@fondof.de"
     }
   ],
   "autoload": {
@@ -16,13 +16,14 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "FondOf\\Airtable\\": "tests/"
+      "FondOf\\Airtable\\": "tests/Airtable"
     }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
     "php": ">=7.3",
+    "ext-json": "*",
     "guzzlehttp/guzzle": "~6.0"
   },
   "require-dev": {
