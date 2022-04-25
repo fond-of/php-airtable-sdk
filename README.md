@@ -1,4 +1,5 @@
-# Airtable SDK for PHP (beta)
+# [Discontinued] Airtable SDK for PHP
+**This repository is discontinued without any replacement.**
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/fond-of/php-airtable-sdk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/fond-of/php-airtable-sdk/?branch=master)
 
